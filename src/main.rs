@@ -1,19 +1,20 @@
-use std::{env::args, io::Read, process::exit};
+use std::{io::Read, process::exit};
+
+use clap::Parser;
+
+use crate::cli::Cli;
+
+mod cli;
 
 fn main() {
-    let args = args().collect::<Vec<String>>();
+    let cli = Cli::parse();
 
-    if args.len() == 1 {
+    if cli.pattern.is_none() || cli.pattern.clone().unwrap().is_empty() {
         println!("Nothing to search.");
         exit(1);
     }
 
-    if args.len() > 2 {
-        println!("Too many arguments.");
-        exit(1);
-    }
-
-    let text = args[1].clone();
+    let text = cli.pattern.unwrap();
     let mut content = String::new();
     std::io::stdin().read_to_string(&mut content).unwrap();
 
