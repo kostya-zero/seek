@@ -17,10 +17,10 @@ It provides a simple and efficient way to search through files and directories, 
 - [ ] Search 
   - [x] Basic text
   - [ ] Regex support (?)
-- [ ] Customization
+- [x] Customization
   - [x] Color selection
   - [x] Line numbers
-  - [ ] Display performance metrics
+  - [x] Display performance metrics
 - [ ] Output
   - [x] Plain text
   - [ ] Convert to JSON

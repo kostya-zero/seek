@@ -1,4 +1,8 @@
-use std::{io::Read, process::exit};
+use std::{
+    io::Read,
+    process::exit,
+    time::{Duration, Instant},
+};
 
 use clap::Parser;
 
@@ -26,6 +30,8 @@ fn main() {
 
     let lines = content.lines();
     let hightlight_color = cli.hightlight_color.as_str();
+
+    let start_timestamp = Instant::now();
     for (id, line) in lines.enumerate() {
         if line.contains(&text) {
             let modified_display =
@@ -39,5 +45,9 @@ fn main() {
                 }
             );
         }
+    }
+    let elapsed = start_timestamp.elapsed().as_millis();
+    if cli.metrics {
+        println!("Done in {} ms", elapsed);
     }
 }
