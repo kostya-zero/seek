@@ -34,16 +34,17 @@ fn main() {
 fn print_terminal(cli: &Cli, lines: &[String]) {
     let pattern = cli.pattern.as_ref().unwrap();
     let hightlight_color = cli.hightlight_color.as_str();
+    let pattern_lenght = pattern.len();
 
     let start_timestamp = Instant::now();
     for (id, line) in lines.iter().enumerate() {
-        if line.contains(pattern) {
-            let modified_display = line.replace(
-                pattern,
-                highlight(pattern, hightlight_color.into()).as_str(),
-            );
+        for (index, _) in line.match_indices(pattern) {
+            let end_index = index + pattern_lenght;
+            let mut line_modified = line.clone();
+            line_modified.insert_str(index, hightlight_color.into());
+            line_modified.insert_str(end_index, "\x1b[0m");
             println!(
-                "{}{modified_display}",
+                "{}{line_modified}",
                 if cli.show_line_numbers {
                     format!(" {}: ", id + 1)
                 } else {
@@ -71,16 +72,14 @@ fn print_json(cli: &Cli, lines: &[String]) {
     let pattern = cli.pattern.as_ref().unwrap();
 
     for (idx, line) in lines.iter().enumerate() {
-        if line.contains(pattern) {
-            for (index, _) in line.match_indices(pattern) {
-                let result = SearchResult {
-                    line_number: idx,
-                    first_character: index,
-                    last_character: pattern.len() + index,
-                };
+        for (index, _) in line.match_indices(pattern) {
+            let result = SearchResult {
+                line_number: idx,
+                first_character: index,
+                last_character: pattern.len() + index,
+            };
 
-                results.push(result);
-            }
+            results.push(result);
         }
     }
 

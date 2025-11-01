@@ -21,6 +21,10 @@ pub struct Cli {
     #[arg(short = 'c', long, default_value = "red")]
     pub hightlight_color: String,
 
+    /// Use case-sensitive search.
+    #[arg(short, long)]
+    pub precise: bool,
+
     /// Show performance metrics.
     #[arg(short, long)]
     pub metrics: bool,
