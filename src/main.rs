@@ -88,6 +88,9 @@ fn print_json(cli: &Cli, lines: &[String]) {
     let pattern = cli.pattern.as_ref().unwrap();
 
     for (idx, line) in lines.iter().enumerate() {
+        if !line.contains(pattern) {
+            continue;
+        }
         for (index, _) in line.match_indices(pattern) {
             let result = SearchResult {
                 line_number: idx,
