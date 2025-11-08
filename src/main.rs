@@ -27,11 +27,6 @@ fn main() {
     }
 
     let lines: Vec<String> = content.lines().map(|l| l.to_string()).collect();
-    // let lines: Vec<String> = content
-    //     .split(['\n', '\r'])
-    //     .filter(|l| !l.is_empty())
-    //     .map(|e| e.to_string())
-    //     .collect();
     if cli.json {
         print_json(&cli, &lines);
     } else {
@@ -41,8 +36,8 @@ fn main() {
 
 fn print_terminal(cli: &Cli, lines: &[String]) {
     let pattern = cli.pattern.as_ref().unwrap();
-    let hightlight_color: HighlightColor = cli.hightlight_color.as_str().into();
-    let hightlight = highlight_to_code(&hightlight_color);
+    let highlight_color: HighlightColor = cli.hightlight_color.as_str().into();
+    let highlight = highlight_to_code(&highlight_color);
     let reset = "\x1b[0m";
 
     let start_timestamp = Instant::now();
@@ -57,7 +52,7 @@ fn print_terminal(cli: &Cli, lines: &[String]) {
         for (idx, _) in line.match_indices(pattern) {
             let end = idx + pattern.len();
             out.push_str(&line[last..idx]);
-            out.push_str(&hightlight);
+            out.push_str(highlight);
             out.push_str(&line[idx..end]);
             out.push_str(reset);
             last = end;
