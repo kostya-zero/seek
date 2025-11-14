@@ -30,3 +30,14 @@ You can use `seek` as you use `grep`. It accepts piped input and then performs s
 ```shell
 cat Cargo.lock | seek clap
 ```
+
+If you want to integrate it with another program then you can get output in JSON format with `-j` flag.
+
+```shell
+cat Cargo.lock | seek -j clap
+```
+
+
+## License 
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
