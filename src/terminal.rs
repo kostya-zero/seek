@@ -28,3 +28,7 @@ pub fn highlight_to_code(color: &HighlightColor) -> &'static str {
         HighlightColor::None => "",
     }
 }
+
+pub fn print_error(msg: &str) {
+    eprintln!("\x1b[31mError\x1b[0m: {msg}")
+}

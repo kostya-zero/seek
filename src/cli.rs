@@ -11,7 +11,7 @@ use clap::Parser;
 )]
 pub struct Cli {
     /// The pattern used in search.
-    pub pattern: Option<String>,
+    pub pattern: String,
 
     /// Snow line number.
     #[arg(short = 'l', long)]

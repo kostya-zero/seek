@@ -5,7 +5,7 @@ use serde::Serialize;
 
 use crate::{
     cli::Cli,
-    terminal::{HighlightColor, highlight_to_code},
+    terminal::{HighlightColor, highlight_to_code, print_error},
 };
 
 mod cli;
@@ -14,8 +14,9 @@ mod terminal;
 fn main() {
     let cli = Cli::parse();
 
-    if cli.pattern.is_none() {
-        println!("Nothing to search.");
+    let pattern = cli.pattern.trim();
+    if pattern.is_empty() {
+        print_error("Empty pattern.");
         exit(1);
     }
 
@@ -26,23 +27,21 @@ fn main() {
         exit(0);
     }
 
-    let lines: Vec<String> = content.lines().map(|l| l.to_string()).collect();
     if cli.json {
-        print_json(&cli, &lines);
+        print_json(pattern, &content);
     } else {
-        print_terminal(&cli, &lines);
+        print_terminal(pattern, &cli, &content);
     }
 }
 
-fn print_terminal(cli: &Cli, lines: &[String]) {
-    let pattern = cli.pattern.as_ref().unwrap();
+fn print_terminal(pattern: &str, cli: &Cli, content: &str) {
     let highlight_color: HighlightColor = cli.hightlight_color.as_str().into();
     let highlight = highlight_to_code(&highlight_color);
     let reset = "\x1b[0m";
 
     let start_timestamp = Instant::now();
 
-    for (id, line) in lines.iter().enumerate() {
+    for (id, line) in content.lines().enumerate() {
         if !line.contains(pattern) {
             continue;
         }
@@ -83,11 +82,10 @@ struct SearchResult {
     last_character: usize,
 }
 
-fn print_json(cli: &Cli, lines: &[String]) {
+fn print_json(pattern: &str, content: &str) {
     let mut results: Vec<SearchResult> = Vec::new();
-    let pattern = cli.pattern.as_ref().unwrap();
 
-    for (idx, line) in lines.iter().enumerate() {
+    for (idx, line) in content.lines().enumerate() {
         if !line.contains(pattern) {
             continue;
         }
