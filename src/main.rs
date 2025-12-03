@@ -37,11 +37,14 @@ fn main() {
 fn print_terminal(pattern: &str, cli: &Cli, content: &str) {
     let highlight_color: HighlightColor = cli.hightlight_color.as_str().into();
     let highlight = highlight_to_code(&highlight_color);
+    let lines = content.lines();
+    let lines_count = lines.clone().count();
+    let line_display_size = lines_count.to_string().len();
     let reset = "\x1b[0m";
 
     let start_timestamp = Instant::now();
 
-    for (id, line) in content.lines().enumerate() {
+    for (id, line) in lines.enumerate() {
         if !line.contains(pattern) {
             continue;
         }
@@ -58,14 +61,12 @@ fn print_terminal(pattern: &str, cli: &Cli, content: &str) {
         }
         out.push_str(&line[last..]);
 
-        println!(
-            "{}{out}",
-            if cli.show_line_numbers {
-                format!(" {}: ", id + 1)
-            } else {
-                String::new()
-            }
-        );
+        if cli.show_line_numbers {
+            let display_number = format!("{:>width$}", id + 1, width = line_display_size);
+            println!("  \x1b[2m\x1b[30m{display_number}\x1b[0m  {out}");
+        } else {
+            println!("{out}");
+        }
     }
 
     if cli.metrics {

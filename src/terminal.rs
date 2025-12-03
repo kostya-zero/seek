@@ -30,5 +30,5 @@ pub fn highlight_to_code(color: &HighlightColor) -> &'static str {
 }
 
 pub fn print_error(msg: &str) {
-    eprintln!("\x1b[31mError\x1b[0m: {msg}")
+    eprintln!("\x1b[31m\x1b[1mError\x1b[0m: {msg}")
 }
