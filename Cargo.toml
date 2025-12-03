@@ -6,6 +6,7 @@ authors = ["Konstantin Zhigaylo <zero@kostyazero.com>"]
 repository = "https://github.com/kostya-zero/seek"
 homepage = "https://github.com/kostya-zero/seek"
 readme = "README.md"
+license = "MIT"
 version = "0.1.0"
 edition = "2024"
 
