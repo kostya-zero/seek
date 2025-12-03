@@ -62,8 +62,8 @@ fn print_terminal(pattern: &str, cli: &Cli, content: &str) {
         out.push_str(&line[last..]);
 
         if cli.show_line_numbers {
-            let display_number = format!("{:>width$}", id + 1, width = line_display_size);
-            println!("  \x1b[2m\x1b[30m{display_number}\x1b[0m  {out}");
+            let display_number = format!("{:<width$}", id + 1, width = line_display_size);
+            println!("  \x1b[2m{display_number}\x1b[0m  {out}");
         } else {
             println!("{out}");
         }
